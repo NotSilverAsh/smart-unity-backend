@@ -1,0 +1,18 @@
+{
+    "QUERY_MISSING_ERR": {
+        "HTTP_ERR_CODE": 400,
+        "ERR_MESSAGE": "Missing Required Parameter/Query."
+    },
+    "API_FETCH_FAILED": {
+        "HTTP_ERR_CODE": 500,
+        "ERR_MESSAGE": "Failed To Fetch Data From The APIs."
+    },
+    "NON_EXISTENT_ENDPOINT": {
+        "HTTP_ERR_CODE": 404,
+        "ERR_MESSAGE": "The Endpoint You've Entered Does Not EXIST."
+    },
+    "CITY_QUERY_MISSING": {
+        "HTTP_ERR_CODE": 400,
+        "ERR_MESSAGE": "Missing City Parameter/Query."
+    }
+}
