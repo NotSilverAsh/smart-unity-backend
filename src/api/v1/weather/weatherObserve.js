@@ -47,12 +47,14 @@ function formatWeatherData(weatherObj) {
   
   const formatted = { ...weatherObj };
   
-  // Format current weather data
+  // Format current weather data - REMOVED TEMPERATURE FORMATTING
   if (formatted.current) {
     formatted.current.humidity = formatPercentage(formatted.current.humidity);
-    formatted.current.temperature = formatToOneDecimal(formatted.current.temperature);
-    formatted.current.temperature_max = formatToOneDecimal(formatted.current.temperature_max);
-    formatted.current.temperature_min = formatToOneDecimal(formatted.current.temperature_min);
+    // Temperature values now keep their original precision
+    // formatted.current.temperature = formatToOneDecimal(formatted.current.temperature);
+    // formatted.current.temperature_max = formatToOneDecimal(formatted.current.temperature_max);
+    // formatted.current.temperature_min = formatToOneDecimal(formatted.current.temperature_min);
+    
     formatted.current.wind_speed = formatToOneDecimal(formatted.current.wind_speed);
     if (formatted.current.wind_speed_50m !== undefined) {
       formatted.current.wind_speed_50m = formatToOneDecimal(formatted.current.wind_speed_50m);
@@ -68,13 +70,15 @@ function formatWeatherData(weatherObj) {
     formatted.current.feels_like = formatToOneDecimal(formatted.current.feels_like);
   }
   
-  // Format forecast data
+  // Format forecast data - REMOVED TEMPERATURE FORMATTING
   if (formatted.forecast && Array.isArray(formatted.forecast)) {
     formatted.forecast = formatted.forecast.map(day => ({
       ...day,
-      temperature: formatToOneDecimal(day.temperature),
-      max_temp: formatToOneDecimal(day.max_temp),
-      min_temp: formatToOneDecimal(day.min_temp),
+      // Temperature values now keep their original precision
+      // temperature: formatToOneDecimal(day.temperature),
+      // max_temp: formatToOneDecimal(day.max_temp),
+      // min_temp: formatToOneDecimal(day.min_temp),
+      
       precipitation: formatToOneDecimal(day.precipitation),
       wind_speed: formatToOneDecimal(day.wind_speed),
       humidity: formatPercentage(day.humidity),
