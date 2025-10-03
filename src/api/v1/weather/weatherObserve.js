@@ -1,5 +1,5 @@
 /**
- * Weather Endpoint with Wind Speed & Air Quality (placeholder)
+ * Weather Endpoint with Wind Speed, Air Quality, and Activity Suitability
  */
 import express from "express";
 import fs from "fs";
@@ -83,7 +83,7 @@ rt.get("/", async (req, res) => {
         max_temp: parseFloat(T2M[date]),
         precipitation: PREC[date] ? parseFloat(PREC[date]) : null,
         wind_speed: WS[date] ? parseFloat(WS[date]) : null,
-        air_quality: "N/A", // placeholder for now
+        air_quality: "N/A", // placeholder
       }))
       .filter(
         (d) =>
@@ -106,6 +106,7 @@ rt.get("/", async (req, res) => {
       return;
     }
 
+    // Calculate averages & percentages
     const totalYears = relevantData.length;
     const avgMaxTemp =
       relevantData.reduce((sum, d) => sum + d.max_temp, 0) / totalYears;
@@ -128,12 +129,46 @@ rt.get("/", async (req, res) => {
           windData.length
         : null;
 
+    // --- Determine activity suitability ---
+    const forecastData = {
+      max_temp: avgMaxTemp,
+      precipitation: changeOfPrecip,
+      wind_speed: avgWindSpeed || 0,
+    };
+
+    const extremeTemp = forecastData.max_temp > 38 || forecastData.max_temp < 5;
+
+    const suitability = {
+      climbing:
+        !extremeTemp &&
+        forecastData.max_temp >= 15 &&
+        forecastData.max_temp <= 32 &&
+        forecastData.precipitation < 2 &&
+        forecastData.wind_speed < 15,
+      hiking:
+        !extremeTemp &&
+        forecastData.max_temp >= 10 &&
+        forecastData.max_temp <= 30 &&
+        forecastData.precipitation < 5,
+      picnic:
+        !extremeTemp &&
+        forecastData.max_temp >= 18 &&
+        forecastData.max_temp <= 35 &&
+        forecastData.precipitation < 3,
+    };
+
+    const warning = extremeTemp
+      ? "Extreme temperature! Outdoor activities not recommended."
+      : "";
+
     const dataAnalysis = {
       avgMaxTemp: avgMaxTemp.toFixed(1),
       changeOfPrecip: changeOfPrecip.toFixed(0),
       changeOfExtremeHeat: changeOfExtremeHeat.toFixed(0),
       avgWindSpeed: avgWindSpeed ? avgWindSpeed.toFixed(1) : "N/A",
-      avgAirQuality: "N/A", // could integrate OpenAQ later
+      avgAirQuality: "N/A",
+      suitability,
+      warning,
     };
 
     res.status(200).json({ dataAnalysis, rawData: relevantData });
