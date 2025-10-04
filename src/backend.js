@@ -27,6 +27,11 @@ import searchUtilRouter from "./api/v1/utils/search.js";
 app.use('/api/v1/weather', weatherObserveRouter);
 app.use('/api/v1/utils/search', searchUtilRouter);
 
+// Monitor //
+app.use((req, res) => {
+  res.sendStatus(200)
+});
+
 // RETURN 404 TO NON-EXISTENT ROUTES //
 app.use((req, res) => {
   const { HTTP_ERR_CODE, ERR_MESSAGE } = ERR.NON_EXISTENT_ENDPOINT;
