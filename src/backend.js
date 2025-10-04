@@ -28,7 +28,7 @@ app.use('/api/v1/weather', weatherObserveRouter);
 app.use('/api/v1/utils/search', searchUtilRouter);
 
 // Monitor //
-app.use((req, res) => {
+app.use('/api/v1/healthCheck', (req, res) => {
   res.sendStatus(200)
 });
 
